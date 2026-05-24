@@ -19,11 +19,17 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
     await page.getByRole('button', { name: 'Buscar Pedido' }).click()
 
     //Assert
-    const orderHeader = page
+    const pedidoHeader = page
         .getByText('Pedido', { exact: true })
         .locator('..')
 
-    await expect(orderHeader).toBeVisible({ timeout: 10_000 })
-    await expect(page.getByText(orderId, { exact: true })).toBeVisible();
-    await expect(page.getByText('APROVADO', { exact: true })).toBeVisible();
+    const statusHeader = page
+        .locator('svg[class*="circle-check"]')
+        .locator('..')
+
+    await expect(pedidoHeader).toBeVisible({ timeout: 10_000 })
+    await expect(page.getByText(orderId, { exact: true })).toBeVisible()
+    await expect(pedidoHeader).toContainText(orderId)
+    await expect(page.getByText('APROVADO', { exact: true })).toBeVisible()
+    await expect(statusHeader).toContainText('APROVADO')
 }) //end of test
