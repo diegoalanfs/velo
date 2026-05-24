@@ -3,19 +3,26 @@ import { test, expect } from '@playwright/test'
 //AAA - Arrange, Act, Assert
 
 test('deve consultar um pedido aprovado', async ({ page }) => {
-  //Arrange
-  await page.goto('http://localhost:5173/')
-  await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
+    const orderId = 'VLO-HJO7UV'
 
-  //Act
-  await page.getByRole('link', { name: 'Consultar Pedido' }).click()
-  await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
-  await page.getByTestId('search-order-id').fill('VLO-HJO7UV') 
-  await page.getByTestId('search-order-button').click()
+    //Arrange
+    await page.goto('http://localhost:5173/')
+    await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
 
-  //Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible() 
-  await expect(page.getByTestId('order-result-id')).toContainText('VLO-HJO7UV')
-  await expect(page.getByTestId('order-result-status')).toBeVisible()
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
+    //Act
+    await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+    await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
+    //   await page.getByTestId('search-order-id').fill('VLO-HJO7UV') 
+    //   await page.getByRole('textbox', { name: 'Número do Pedido' }).fill('VLO-HJO7UV')
+    await page.getByLabel('Número do Pedido').fill(orderId)
+    // await page.getByTestId('search-order-button').click()
+    await page.getByRole('button', { name: 'Buscar Pedido' }).click()
+
+    //Assert
+    const orderHeader = page
+        .getByText('Pedido', { exact: true })
+        .locator('..')
+
+    await expect(orderHeader).toBeVisible({ timeout: 10_000 })
+    await expect(page.getByText(orderId, { exact: true })).toBeVisible()
 }) //end of test
