@@ -24,5 +24,6 @@ test('deve consultar um pedido aprovado', async ({ page }) => {
         .locator('..')
 
     await expect(orderHeader).toBeVisible({ timeout: 10_000 })
-    await expect(page.getByText(orderId, { exact: true })).toBeVisible()
+    await expect(page.getByText(orderId, { exact: true })).toBeVisible();
+    await expect(page.getByText('APROVADO', { exact: true })).toBeVisible();
 }) //end of test
