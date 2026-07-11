@@ -1,0 +1,27 @@
+- generic [ref=e4]:
+  - img [ref=e5]
+  - generic [ref=e21]:
+    - generic [ref=e23]:
+      - img [ref=e25]
+      - textbox "Usuário" [ref=e27]
+      - button [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+    - generic [ref=e33]:
+      - img [ref=e35]
+      - textbox "Password" [ref=e37]
+      - button [ref=e39] [cursor=pointer]:
+        - img [ref=e40]
+    - button "Entrar" [ref=e42] [cursor=pointer]
+  - generic [ref=e43]:
+    - separator [ref=e44]
+    - generic [ref=e45]:
+      - generic [ref=e46] [cursor=pointer]:
+        - generic [ref=e47]:
+          - checkbox "Lembrar" [ref=e48]
+          - img [ref=e49]
+        - paragraph [ref=e51]: Lembrar
+      - link "Esqueceu a senha?" [ref=e52] [cursor=pointer]:
+        - /url: /realms/yofc_optivision/login-actions/reset-credentials?client_id=frontend-vite&tab_id=D0pjoCRsAew
+        - paragraph [ref=e53]: Esqueceu a senha?
+    - separator [ref=e54]
+  - img [ref=e55]
