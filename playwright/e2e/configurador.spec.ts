@@ -30,4 +30,19 @@ test.describe('Configurador de Veículo', () => {
     await app.configurator.validateVehicleImage({ wheelType: 'aero' })
     await app.configurator.validatePrice(CONFIGURATOR_PRICES.base)
   })
+
+  test('deve atualizar o preço ao adicionar opcionais e persistir valores no checkout', async ({
+    app,
+  }) => {
+    await app.configurator.validatePrice(CONFIGURATOR_PRICES.base)
+    await app.configurator.checkOptional('Precision Park')
+    await app.configurator.validatePrice(CONFIGURATOR_PRICES.withPrecisionPark)
+    await app.configurator.checkOptional('Flux Capacitor')
+    await app.configurator.validatePrice(CONFIGURATOR_PRICES.withBothOptionals)
+    await app.configurator.uncheckOptional('Precision Park')
+    await app.configurator.uncheckOptional('Flux Capacitor')
+    await app.configurator.validatePrice(CONFIGURATOR_PRICES.base)
+    await app.configurator.proceedToCheckout()
+    await app.configurator.validateCheckoutPrice(CONFIGURATOR_PRICES.base)
+  })
 })

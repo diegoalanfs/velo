@@ -11,7 +11,11 @@ export type VehiclePreview = {
 export const CONFIGURATOR_PRICES = {
   base: 'R$ 40.000,00',
   withSportWheels: 'R$ 42.000,00',
+  withPrecisionPark: 'R$ 45.500,00',
+  withBothOptionals: 'R$ 50.500,00',
 } as const
+
+export type OptionalFeature = 'Precision Park' | 'Flux Capacitor'
 
 export function createConfiguratorActions(page: Page) {
   const totalPrice = page.getByTestId('total-price')
@@ -51,6 +55,27 @@ export function createConfiguratorActions(page: Page) {
     async validateWheelOptionsVisible() {
       await expect(page.getByRole('button', { name: /Aero Wheels/ })).toBeVisible()
       await expect(page.getByRole('button', { name: /Sport Wheels/ })).toBeVisible()
+    },
+
+    async checkOptional(label: OptionalFeature) {
+      await page.getByRole('checkbox', { name: new RegExp(label) }).check()
+    },
+
+    async uncheckOptional(label: OptionalFeature) {
+      await page.getByRole('checkbox', { name: new RegExp(label) }).uncheck()
+    },
+
+    async proceedToCheckout() {
+      await page.getByRole('button', { name: 'Monte o Seu' }).click()
+      await expect(page).toHaveURL('/order')
+      await expect(page.getByRole('heading', { name: 'Finalizar Pedido' })).toBeVisible()
+    },
+
+    async validateCheckoutPrice(expected: string) {
+      const cashPaymentButton = page.getByRole('button', { name: /^À Vista/ })
+      await expect(cashPaymentButton).toBeVisible()
+      await expect(cashPaymentButton).toContainText(expected)
+      await expect(page.getByTestId('summary-total-price')).toHaveText(expected)
     },
   }
 }
