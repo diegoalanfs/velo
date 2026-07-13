@@ -1,0 +1,44 @@
+{
+  "aprovado": {
+    "status": "APROVADO",
+    "number": "VLO-HJO7UV",
+    "color": "Lunar White",
+    "wheels": "aero Wheels",
+    "customer": {
+      "name": "Alan Ferreira",
+      "email": "alan@velo.dev",
+      "document": "000.000.141-41",
+      "phone": "(11) 99999-9999"
+    },
+    "payment": "À Vista",
+    "total_price": "40000"
+  },
+  "reprovado": {
+    "status": "REPROVADO",
+    "number": "VLO-T45VMG",
+    "color": "Midnight Black",
+    "wheels": "sport Wheels",
+    "customer": {
+      "name": "QA Tester",
+      "email": "qa@velo.dev",
+      "document": "000.000.141-41",
+      "phone": "(11) 99999-9999"
+    },
+    "payment": "À Vista",
+    "total_price": "40000"
+  },
+  "emAnalise": {
+    "status": "EM_ANALISE",
+    "number": "VLO-ID79H5",
+    "color": "Glacier Blue",
+    "wheels": "aero Wheels",
+    "customer": {
+      "name": "Diego Alan",
+      "email": "diego@velo.dev",
+      "document": "000.000.141-41",
+      "phone": "(11) 99999-9999"
+    },
+    "payment": "À Vista",
+    "total_price": "40000"
+  }
+}
