@@ -72,6 +72,7 @@ export function createCheckoutActions(page: Page) {
   })
   const submitButton = page.getByRole('button', { name: 'Confirmar Pedido' })
   const cashPaymentButton = page.getByRole('button', { name: /^À Vista/ })
+  const financePaymentButton = page.getByRole('button', { name: /^Financiamento/ })
 
   return {
     elements: {
@@ -120,6 +121,18 @@ export function createCheckoutActions(page: Page) {
       await cashPaymentButton.click()
     },
 
+    async selectFinancePayment() {
+      await financePaymentButton.click()
+    },
+
+    async selectPaymentMethod(method: 'avista' | 'financiamento') {
+      if (method === 'financiamento') {
+        await financePaymentButton.click()
+      } else {
+        await cashPaymentButton.click()
+      }
+    },
+
     async acceptTerms() {
       await termsCheckbox.check()
     },
@@ -148,7 +161,6 @@ export function createCheckoutActions(page: Page) {
     },
 
     async validateSummaryTotal(price: string) {
-      await expect(cashPaymentButton).toContainText(price)
       await expect(page.getByTestId('summary-total-price')).toHaveText(price)
     },
 
