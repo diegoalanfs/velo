@@ -169,6 +169,12 @@ export function createCheckoutActions(page: Page) {
       await expect(page.getByRole('heading', { name: 'Pedido Aprovado!' })).toBeVisible()
       await expect(page.getByTestId('order-id')).toBeVisible()
     },
+
+    async validateOrderPending() {
+      await expect(page).toHaveURL('/success')
+      await expect(page.getByRole('heading', { name: 'Pedido em Análise!' })).toBeVisible()
+      await expect(page.getByTestId('order-id')).toBeVisible()
+    },
   }
 }
 

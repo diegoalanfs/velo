@@ -1,5 +1,7 @@
 
 import { test } from '../support/fixtures'
+import { expect } from '@playwright/test'
+import { db } from '../support/database/database'
 import { CHECKOUT_VALIDATION_MESSAGES } from '../support/actions/checkoutActions'
 import { deleteOrderByEmail } from '../support/database/orderRepository'
 
@@ -154,6 +156,48 @@ test.describe('Checkout - Pagamento e Confirmação de Pedido', () => {
     await app.checkout.confirmOrder()
 
     await app.checkout.validateOrderApproved()
+  })
+
+  test('CT07 - Deve colocar o pedido em análise de crédito quando o score do CPF for entre 501 e 700 no financiamento.', async ({ page, app }) => {
+    const validFinanceOrderData = {
+      name: 'Ada',
+      lastname: 'Lovelace',
+      email: 'ada@velo.dev',
+      phone: '11988887777',
+      document: '74187455086',
+      store: /Velô Paulista/,
+      paymentMethod: 'financiamento' as const,
+      expectedTotalPrice: 'R$ 40.800,00',
+    }
+
+    await deleteOrderByEmail(validFinanceOrderData.email)
+
+    await page.route('**/functions/v1/credit-analysis', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          status: 'Done',
+          score: 600,
+        }),
+      })
+    })
+
+    await app.checkout.fillCustomerData({
+      name: validFinanceOrderData.name,
+      lastname: validFinanceOrderData.lastname,
+      email: validFinanceOrderData.email,
+      phone: validFinanceOrderData.phone,
+      document: validFinanceOrderData.document,
+      store: validFinanceOrderData.store,
+    })
+    await app.checkout.selectPaymentMethod(validFinanceOrderData.paymentMethod)
+    await app.checkout.validateSummaryTotal(validFinanceOrderData.expectedTotalPrice)
+
+    await app.checkout.acceptTerms()
+    await app.checkout.confirmOrder()
+
+    await app.checkout.validateOrderPending()
   })
 })
 
